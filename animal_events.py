@@ -1,0 +1,2 @@
+class AnimalEvents:
+    pass
