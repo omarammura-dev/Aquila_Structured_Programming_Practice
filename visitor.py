@@ -3,8 +3,8 @@ class Visitor:
         self.age = age
         self.group_type = group_type
 
-    def observe_animals(self):
-        pass
+    def observe_animals(self, animal):
+        print(f"The visitor is observing the {animal.name}")
 
-    def interact(self):
-        pass
+    def interact(self, animal):
+        print(f"The visitor is interacting with the {animal.name}")
