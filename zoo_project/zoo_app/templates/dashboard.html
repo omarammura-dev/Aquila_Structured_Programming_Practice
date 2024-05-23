@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .bg-zoo {
+            background-color: #4b7235;
+        }
+        .text-zoo {
+            color: #4b7235;
+        }
+        .content {
+            flex: 1 0 auto;
+        }
+        .footer {
+            flex-shrink: 0;
+        }
+        .habitat-image {
+        width: 100%; 
+        height: 200px;  
+        object-fit: cover;  
+    }
+    </style>
+</head>
+<body class="d-flex flex-column">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand text-zoo" href="#">Zoo Dashboard</a>
+    </nav>
+
+    <header class="bg-zoo text-white text-center py-5 mb-4">
+        <div class="container">
+            <h1 class="font-weight-light">Welcome to the Zoo Dashboard</h1>
+        </div>
+    </header>
+
+    <div class="container content">
+        <div class="row">
+            {% for habitat in habitats %}
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'list_animals' habitat.id %}">
+                    <div class="card h-100">
+                        <img src="{{habitat.image.url}}" class="card-img-top habitat-image" alt="{{ habitat.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ habitat.name }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+  
+    <footer class="py-5 bg-zoo footer">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Aquila Zoo 2022</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

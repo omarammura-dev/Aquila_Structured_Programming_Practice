@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animals in {{ habitat.name }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+         body::after {
+            content: "";
+            background: url('{{ habitat.image.url }}');
+            opacity: 0.8;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;   
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+        .clock-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+        }
+        .add-visitors-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+       
+        .visitor-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .visitor-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 200px;
+            margin: 10px; 
+            
+        }
+        .card-title{
+            font-size: small;
+        }
+        .card-body{
+            font-size: small; 
+        }
+
+        .visitor-card .card-body {
+            padding: 20px;
+        }
+        .animal-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .animal-container {
+            margin-top: 20px;
+        }
+        .animal-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>    
+    <div class="header" style="background-color: transparent !important;">        
+        <h1 style="color: white;">Animals in {{ habitat.name }}</h1>
+        <!-- <img class="img-fluid" src="{{ habitat.image.url }}" alt="{{ habitat.name }}"> -->
+    </div>
+
+    <div class="clock-container" id="randomClock"></div>
+
+    <div class="add-visitors-container">
+        <button class="btn btn-primary" onclick="addRandomVisitors('{{habitat.id}}')">Add Random Visitors</button>
+    </div>
+    <div class="visitor-container">
+        {% for visitor in visitors %}
+        <div class="card visitor-card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Visitor Type: {{ visitor.group_type }}</h2>
+                {% if visitor.age %}
+                <p class="card-text">Age: {{ visitor.age }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="container animal-container">
+        <div class="row">
+            {% for animal in animals %}
+            <div class="col-md-4">
+                <div class="card mb-4 animal-card">
+                    <img class="card-img-top animal-image" src="{{ animal.image.url }}" alt="{{ animal.name }}">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ animal.name }}</h2>
+                        <div class="animal-actions">
+                            <button class="btn btn-success" onclick="animalEat('{{ animal.id }}')">Eat</button>
+                            <button class="btn btn-warning" onclick="animalSleep('{{ animal.id }}')">Sleep</button>
+                            <button class="btn btn-info" onclick="animalMove('{{ animal.id }}')">Move</button>
+                            <button class="btn btn-info" onclick="animalBirth('{{ animal.id }}')">Birth</button>
+                            <button class="btn btn-info mt-2" onclick="animalHunt('{{ animal.id }}')">Hunt</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+            function animalEat(id) {
+            $.ajax({
+                url: `/zoo_app/animal/${id}/eat/`,
+                success: function (data) {
+                    alert(`Animal performed action: Eat`);
+                }
+            });
+        }
+
+        function animalSleep(id) {
+            $.ajax({
+                url: `/zoo_app/animal/${id}/sleep/`,
+                success: function (data) {
+                    alert(`Animal performed action: Sleep`);
+                }
+            });
+        }
+
+        function animalMove(id) {
+            $.ajax({
+                url: `/zoo_app/animal/${id}/move/`,
+                success: function (data) {
+                    alert(`Animal performed action: Move`);
+                }
+            });
+        }
+        function animalBirth(id) {
+            $.ajax({
+                url: `/zoo_app/animal/${id}/birth/`,
+                success: function (data) {
+                    alert(`Animal performed action: Birth`);
+                }
+            });
+        }
+        
+        function animalHunt(id) {
+            $.ajax({
+                url: `/zoo_app/animal/${id}/hunt/`,
+                success: function (data) {
+                    alert(`Animal is preforming anaction: Hunt`);
+                }
+            });
+        }
+
+        function addRandomVisitors(id) {
+           $.ajax({
+            url:`/zoo_app/add_random_visitors/${id}`,
+            success: (data) =>{
+                alert("Visitor added!")
+            }
+           })
+        }
+
+      
+        setInterval(() => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('randomClock').textContent = `${hours}:${minutes}`;
+        }, 1000);
+    </script>
+</body>
+</html>
+
